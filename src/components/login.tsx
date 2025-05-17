@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from "react";
-import Signup from "./signup"; // Make sure to import your Signup component
+import Signup from "./signup";
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState("");
@@ -42,6 +42,7 @@ const Login: React.FC = () => {
                         <button 
                             onClick={handleClose}
                             className="text-gray-500 hover:text-gray-700 focus:outline-none"
+                            aria-label="Close"
                         >
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -64,7 +65,7 @@ const Login: React.FC = () => {
                                 id="email"
                                 type="email"
                                 value={email}
-                                onChange={e => setEmail(e.target.value)}
+                                onChange={(e) => setEmail(e.target.value)}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="your@email.com"
                                 required
@@ -79,7 +80,7 @@ const Login: React.FC = () => {
                                 id="password"
                                 type="password"
                                 value={password}
-                                onChange={e => setPassword(e.target.value)}
+                                onChange={(e) => setPassword(e.target.value)}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="••••••••"
                                 required
@@ -98,9 +99,9 @@ const Login: React.FC = () => {
                                 </label>
                             </div>
                             
-                            <a href="#" className="text-sm text-blue-600 hover:text-blue-500">
+                            <button type="button" className="text-sm text-blue-600 hover:text-blue-500">
                                 Forgot password?
-                            </a>
+                            </button>
                         </div>
                         
                         <button
@@ -113,10 +114,11 @@ const Login: React.FC = () => {
                     
                     <div className="mt-4 text-center">
                         <p className="text-sm text-gray-600">
-                            Don't have an account?{' '}
+                            Don&apos;t have an account?{' '}
                             <button 
                                 onClick={toggleForm}
                                 className="text-blue-600 hover:text-blue-500 bg-transparent border-none cursor-pointer"
+                                type="button"
                             >
                                 Sign up
                             </button>

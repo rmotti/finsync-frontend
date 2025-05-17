@@ -12,7 +12,6 @@ const Signup: React.FC<SignupProps> = ({ onClose, onSwitchToLogin }) => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
-    const [isOpen, setIsOpen] = useState(true);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -21,18 +20,12 @@ const Signup: React.FC<SignupProps> = ({ onClose, onSwitchToLogin }) => {
             return;
         }
         if (password !== confirmPassword) {
-            setError("Passwords don't match.");
+            setError("Passwords don&apos;t match.");
             return;
         }
         setError("");
         alert(`Account created for ${name} (${email})`);
     };
-
-    const handleClose = () => {
-        setIsOpen(false);
-    };
-
-    if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -41,8 +34,9 @@ const Signup: React.FC<SignupProps> = ({ onClose, onSwitchToLogin }) => {
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-2xl font-bold text-gray-800">Create Account</h2>
                         <button 
-                            onClick={handleClose}
+                            onClick={onClose}
                             className="text-gray-500 hover:text-gray-700 focus:outline-none"
+                            aria-label="Close"
                         >
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -65,7 +59,7 @@ const Signup: React.FC<SignupProps> = ({ onClose, onSwitchToLogin }) => {
                                 id="name"
                                 type="text"
                                 value={name}
-                                onChange={e => setName(e.target.value)}
+                                onChange={(e) => setName(e.target.value)}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="John Doe"
                                 required
@@ -80,7 +74,7 @@ const Signup: React.FC<SignupProps> = ({ onClose, onSwitchToLogin }) => {
                                 id="email"
                                 type="email"
                                 value={email}
-                                onChange={e => setEmail(e.target.value)}
+                                onChange={(e) => setEmail(e.target.value)}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="your@email.com"
                                 required
@@ -95,7 +89,7 @@ const Signup: React.FC<SignupProps> = ({ onClose, onSwitchToLogin }) => {
                                 id="password"
                                 type="password"
                                 value={password}
-                                onChange={e => setPassword(e.target.value)}
+                                onChange={(e) => setPassword(e.target.value)}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="••••••••"
                                 required
@@ -110,7 +104,7 @@ const Signup: React.FC<SignupProps> = ({ onClose, onSwitchToLogin }) => {
                                 id="confirmPassword"
                                 type="password"
                                 value={confirmPassword}
-                                onChange={e => setConfirmPassword(e.target.value)}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="••••••••"
                                 required
@@ -141,11 +135,10 @@ const Signup: React.FC<SignupProps> = ({ onClose, onSwitchToLogin }) => {
                         <p className="text-sm text-gray-600">
                             Already have an account?{' '}
                             <button
-                                onClick={() => {
-                                    onSwitchToLogin();
-                                    handleClose();
-                                }}    
-                                className="text-blue-600 hover:text-blue-500">
+                                onClick={onSwitchToLogin}
+                                className="text-blue-600 hover:text-blue-500 bg-transparent border-none cursor-pointer"
+                                type="button"
+                            >
                                 Sign in
                             </button>
                         </p>
