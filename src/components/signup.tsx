@@ -1,44 +1,45 @@
 'use client';
 import React, { useState } from "react";
-import Signup from "./signup"; // Make sure to import your Signup component
 
-const Login: React.FC = () => {
+interface SignupProps {
+    onClose: () => void;
+    onSwitchToLogin: () => void;
+}
+
+const Signup: React.FC<SignupProps> = ({ onClose, onSwitchToLogin }) => {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
     const [isOpen, setIsOpen] = useState(true);
-    const [showSignup, setShowSignup] = useState(false);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!email || !password) {
-            setError("Please enter both email and password.");
+        if (!name || !email || !password || !confirmPassword) {
+            setError("Please fill in all fields.");
+            return;
+        }
+        if (password !== confirmPassword) {
+            setError("Passwords don't match.");
             return;
         }
         setError("");
-        alert(`Logged in as ${email}`);
+        alert(`Account created for ${name} (${email})`);
     };
 
     const handleClose = () => {
         setIsOpen(false);
     };
 
-    const toggleForm = () => {
-        setShowSignup(!showSignup);
-    };
-
     if (!isOpen) return null;
-
-    if (showSignup) {
-        return <Signup onClose={handleClose} onSwitchToLogin={toggleForm} />;
-    }
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg shadow-xl overflow-hidden w-full max-w-md">
                 <div className="p-6">
                     <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-2xl font-bold text-gray-800">Welcome Back</h2>
+                        <h2 className="text-2xl font-bold text-gray-800">Create Account</h2>
                         <button 
                             onClick={handleClose}
                             className="text-gray-500 hover:text-gray-700 focus:outline-none"
@@ -55,6 +56,21 @@ const Login: React.FC = () => {
                                 {error}
                             </div>
                         )}
+                        
+                        <div>
+                            <label className="block text-gray-700 text-sm font-medium mb-1" htmlFor="name">
+                                Full Name
+                            </label>
+                            <input
+                                id="name"
+                                type="text"
+                                value={name}
+                                onChange={e => setName(e.target.value)}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="John Doe"
+                                required
+                            />
+                        </div>
                         
                         <div>
                             <label className="block text-gray-700 text-sm font-medium mb-1" htmlFor="email">
@@ -86,39 +102,51 @@ const Login: React.FC = () => {
                             />
                         </div>
                         
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                                <input
-                                    id="remember-me"
-                                    type="checkbox"
-                                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                                />
-                                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                                    Remember me
-                                </label>
-                            </div>
-                            
-                            <a href="#" className="text-sm text-blue-600 hover:text-blue-500">
-                                Forgot password?
-                            </a>
+                        <div>
+                            <label className="block text-gray-700 text-sm font-medium mb-1" htmlFor="confirmPassword">
+                                Confirm Password
+                            </label>
+                            <input
+                                id="confirmPassword"
+                                type="password"
+                                value={confirmPassword}
+                                onChange={e => setConfirmPassword(e.target.value)}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="••••••••"
+                                required
+                            />
+                        </div>
+                        
+                        <div className="flex items-center">
+                            <input
+                                id="terms"
+                                type="checkbox"
+                                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                required
+                            />
+                            <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
+                                I agree to the Terms and Conditions
+                            </label>
                         </div>
                         
                         <button
                             type="submit"
                             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out"
                         >
-                            Sign in
+                            Create Account
                         </button>
                     </form>
                     
                     <div className="mt-4 text-center">
                         <p className="text-sm text-gray-600">
-                            Don't have an account?{' '}
-                            <button 
-                                onClick={toggleForm}
-                                className="text-blue-600 hover:text-blue-500 bg-transparent border-none cursor-pointer"
-                            >
-                                Sign up
+                            Already have an account?{' '}
+                            <button
+                                onClick={() => {
+                                    onSwitchToLogin();
+                                    handleClose();
+                                }}    
+                                className="text-blue-600 hover:text-blue-500">
+                                Sign in
                             </button>
                         </p>
                     </div>
@@ -128,4 +156,4 @@ const Login: React.FC = () => {
     );
 };
 
-export default Login;
+export default Signup;
