@@ -1,8 +1,19 @@
-// components/TransactionForm.tsx
 'use client';
 import { useState } from 'react';
 
-export const TransactionForm = ({ onAddTransaction }: { onAddTransaction: (transaction: any) => void }) => {
+type Transaction = {
+  description: string;
+  amount: number;
+  type: 'income' | 'expense';
+  date: string;
+  category: string;
+};
+
+interface TransactionFormProps {
+  onAddTransaction: (transaction: Transaction) => void;
+}
+
+export const TransactionForm: React.FC<TransactionFormProps> = ({ onAddTransaction }) => {
   const [formData, setFormData] = useState({
     description: '',
     amount: '',
@@ -15,6 +26,7 @@ export const TransactionForm = ({ onAddTransaction }: { onAddTransaction: (trans
     onAddTransaction({
       ...formData,
       amount: parseFloat(formData.amount),
+      type: formData.type as 'income' | 'expense',
       date: new Date().toISOString()
     });
     setFormData({ description: '', amount: '', type: 'expense', category: '' });
@@ -29,47 +41,47 @@ export const TransactionForm = ({ onAddTransaction }: { onAddTransaction: (trans
           <input
             type="text"
             value={formData.description}
-            onChange={(e) => setFormData({...formData, description: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             className="w-full p-2 border rounded"
             required
           />
         </div>
-        
+
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Valor (R$)</label>
           <input
             type="number"
             step="0.01"
             value={formData.amount}
-            onChange={(e) => setFormData({...formData, amount: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
             className="w-full p-2 border rounded"
             required
           />
         </div>
-        
+
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
           <select
             value={formData.type}
-            onChange={(e) => setFormData({...formData, type: e.target.value as 'income' | 'expense'})}
+            onChange={(e) => setFormData({ ...formData, type: e.target.value as 'income' | 'expense' })}
             className="w-full p-2 border rounded"
           >
             <option value="expense">Saída</option>
             <option value="income">Entrada</option>
           </select>
         </div>
-        
+
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
           <input
             type="text"
             value={formData.category}
-            onChange={(e) => setFormData({...formData, category: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
             className="w-full p-2 border rounded"
             required
           />
         </div>
-        
+
         <button
           type="submit"
           className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"

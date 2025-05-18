@@ -1,26 +1,28 @@
-// app/dashboard/page.tsx
 'use client';
 import { useState } from 'react';
 import { SummaryCard } from '@/components/SummaryCard';
 import { TransactionCard } from '@/components/TransactionCard';
 import Link from 'next/link';
 
+type Transaction = {
+  description: string;
+  amount: number;
+  type: 'income' | 'expense';
+  date: string;
+  category: string;
+};
+
 export default function Dashboard() {
-  const [transactions, setTransactions] = useState<any[]>([]);
-  
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const income = transactions
     .filter(t => t.type === 'income')
     .reduce((sum, t) => sum + t.amount, 0);
-  
+
   const expenses = transactions
     .filter(t => t.type === 'expense')
     .reduce((sum, t) => sum + t.amount, 0);
-  
-  const balance = income - expenses;
 
-  const handleAddTransaction = (transaction: any) => {
-    setTransactions([transaction, ...transactions]);
-  };
+  const balance = income - expenses;
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -28,9 +30,9 @@ export default function Dashboard() {
         <h1 className="text-2xl font-bold text-gray-800">Finanças Pessoais</h1>
         <p className="text-gray-600">Gerencie suas entradas e saídas</p>
       </header>
-      
+
       <SummaryCard income={income} expenses={expenses} balance={balance} />
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
           <div className="flex justify-between items-center mb-4">
@@ -42,7 +44,7 @@ export default function Dashboard() {
               + Nova Transação
             </Link>
           </div>
-          
+
           <div className="space-y-3">
             {transactions.length > 0 ? (
               transactions.map((t, i) => (
@@ -61,7 +63,7 @@ export default function Dashboard() {
             )}
           </div>
         </div>
-        
+
         <div>
           <h2 className="text-xl font-semibold mb-4">Resumo</h2>
           <div className="bg-white p-6 rounded-lg shadow">
